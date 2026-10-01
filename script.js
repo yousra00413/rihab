@@ -8,17 +8,16 @@ const CONFIG = {
 };
 
 // 🎵 Audio paths
-const BIRTHDAY_MUSIC = "assets/birthday.mp3";
-const sounds  = { correct: "assets/sounds/correct.mp3",  wrong: "assets/sounds/wrong.mp3" };    // Game 1
-const sounds2 = { correct: "assets/sounds/correct2.mp3", wrong: "assets/sounds/wrong2.mp3" };   // Game 2
+const BIRTHDAY_MUSIC = "birthday.mp3";
+const sounds  = { correct: "correct.mp3",  wrong: "wrong.mp3" };    // Game 1
+const sounds2 = { correct: "correct2.mp3", wrong: "wrong2.mp3" };   // Game 2
 
-// 🖼️ Reaction images — NOT random. Question n always uses image n:
-//   Game 1:  Q1..Q10 → assets/true/true1..10.png        / assets/false/false1..10.png
-//   Game 2:  Q1..Q10 → assets/true_yesno/true11..20.png / assets/false_yesno/false11..20.png
+// 🖼️ Reaction images — NOT random. Question n always uses image n (all files are in the SAME root folder):
+//   Game 1:  Q1..Q10 → true1..true10.png  / false1..false10.png
+//   Game 2:  Q1..Q10 → true11..true20.png / false11..false20.png
 function reactionImage(game, kind, qIndex) {
-  if (game === 1) return `assets/${kind === "correct" ? "true" : "false"}/${kind === "correct" ? "true" : "false"}${qIndex + 1}.png`;
-  const n = qIndex + 11;
-  return `assets/${kind === "correct" ? "true_yesno" : "false_yesno"}/${kind === "correct" ? "true" : "false"}${n}.png`;
+  const n = game === 1 ? qIndex + 1 : qIndex + 11;
+  return `${kind === "correct" ? "true" : "false"}${n}.png`;
 }
 
 const translations = {
