@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>A little surprise for Rihab 🎂</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700&family=Fredoka:wght@500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="intro">
+  <div id="floaters" aria-hidden="true"></div>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <header class="topbar">
+    <div class="lang" role="group" aria-label="Language">
+      <button id="lang-en" class="on" type="button">EN</button><span>|</span><button id="lang-ar" type="button">AR</button>
+    </div>
+  </header>
+
+  <!-- 🎵 assets/birthday.mp3 — starts when the site opens, stops for good when Game 1 starts -->
+  <audio id="music" src="assets/birthday.mp3" loop preload="auto" autoplay></audio>
+
+  <main>
+    <!-- 1 — BIRTHDAY SCENE -->
+    <section id="s-intro" class="screen active">
+      <div class="scene">
+        <span class="spark" style="top:4%;inset-inline-start:8%">✨</span>
+        <span class="spark" style="top:12%;inset-inline-end:10%;animation-delay:.7s">⭐</span>
+        <span class="spark" style="top:40%;inset-inline-start:3%;animation-delay:1.3s">🎀</span>
+        <span class="spark" style="top:46%;inset-inline-end:4%;animation-delay:.4s">✨</span>
+        <span class="spark" style="bottom:10%;inset-inline-start:12%;animation-delay:1s">⭐</span>
+        <span class="spark" style="bottom:6%;inset-inline-end:14%;animation-delay:1.7s">🎀</span>
+        <div class="scene-grid">
+          <div class="cake-wrap"><div id="cake" class="cake"></div></div>
+          <div class="msg-col">
+            <div id="msg" class="msg" aria-live="polite"></div>
+            <button id="play-btn" class="btn big" type="button" data-i18n="letsPlay" hidden></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 — NAME -->
+    <section id="s-name" class="screen">
+      <div class="card fill center">
+        <div class="big-emoji">👀</div>
+        <h1 data-i18n="before"></h1>
+        <div class="grow"></div>
+        <label for="player-name" class="label" data-i18n="whatsName"></label>
+        <input id="player-name" maxlength="30" autocomplete="given-name" data-i18n-ph="namePh">
+        <p id="name-error" class="error" data-i18n="nameErr" hidden></p>
+        <button id="start-btn" class="btn" type="button" data-i18n="startGame"></button>
+      </div>
+    </section>
+
+    <!-- 3 — GAME 1 -->
+    <section id="s-quiz" class="screen">
+      <div class="card fill">
+        <div class="quiz-top"><span id="q-count"></span><span id="q-score"></span></div>
+        <div class="bar"><div id="bar-fill"></div></div>
+        <h2 id="q-text"></h2>
+        <div id="answers" class="answers"></div>
+        <div class="grow"></div>
+      </div>
+    </section>
+
+    <!-- 4 — GAME 1 RESULT -->
+    <section id="s-result" class="screen">
+      <div class="card fill center">
+        <div class="big-emoji">🎉</div>
+        <h1 data-i18n="complete"></h1>
+        <p class="lead" data-i18n="yourScore"></p>
+        <p class="score big-score" id="final-score" dir="ltr"></p>
+        <p id="score-msg" class="lead"></p>
+        <div class="grow"></div>
+        <button id="continue-btn" class="btn big" type="button" data-i18n="continueBtn"></button>
+      </div>
+    </section>
+
+    <!-- 5 — GAME 2 (YES / NO) -->
+    <section id="s-quiz2" class="screen">
+      <div class="card fill">
+        <h1 class="g2-title" data-i18n="g2Title"></h1>
+        <p class="g2-sub" data-i18n="g2Sub"></p>
+        <div class="quiz-top"><span id="q2-count"></span><span id="q2-score"></span></div>
+        <div class="bar"><div id="bar-fill2"></div></div>
+        <h2 id="q2-text"></h2>
+        <div id="yesno" class="yesno"></div>
+        <div class="grow"></div>
+      </div>
+    </section>
+
+    <!-- 6 — FINAL RESULT -->
+    <section id="s-final" class="screen">
+      <div class="card fill center">
+        <div class="big-emoji">🎀</div>
+        <h1 id="f-title"></h1>
+        <p class="lead" id="f-got"></p>
+        <p class="score big-score" id="f-score" dir="ltr"></p>
+        <p class="lead" id="f-msg"></p>
+        <div class="grow"></div>
+        <div class="shot">
+          <h2 data-i18n="shotTitle"></h2>
+          <p class="lead" data-i18n="shotSub"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- REACTION POPUP (shared by both games): big image → text → NEXT. Fully reset on every NEXT click. -->
+  <div id="reaction" class="reaction-overlay" hidden>
+    <div id="react-stage" class="react-stage"><img id="react-img" alt=""></div>
+    <p id="react-text" class="react-text" aria-live="polite"></p>
+    <button id="next-btn" class="btn" type="button"></button>
+  </div>
+
+  <!-- SURPRISE VIDEO between Game 1 and Game 2 -->
+  <div id="surprise" class="surprise" hidden>
+    <div class="finale">
+      <h1 data-i18n="surpriseTitle"></h1>
+      <!-- 🎬 assets/surprise/surprise.mp4 — starts automatically, never cropped -->
+      <div class="video-wrap">
+        <video id="video" class="surprise-video" controls autoplay playsinline preload="auto">
+          <source src="assets/surprise/surprise.mp4" type="video/mp4">
+        </video>
+        <p id="video-warn" class="video-warn" hidden>⚠️ Video format not supported by this browser — re-export surprise.mp4 as H.264 + AAC.</p>
+        <button id="unmute-btn" class="unmute" type="button" hidden></button>
+      </div>
+      <button id="skip-btn" class="btn skip" type="button" data-i18n="skip"></button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
